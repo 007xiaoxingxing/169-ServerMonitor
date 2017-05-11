@@ -65,6 +65,12 @@ class ChatSocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_close(self):
         ChatSocketHandler.waiters.remove(self)
+        chat = {
+            "id" :str(uuid.uuid4()),
+            "body":"some one leave"
+        }
+        ChatSocketHandler.update_cache(chat)
+        ChatSocketHandler.send_updates(chat)
 
     @classmethod
     def update_cache(cls, chat):
@@ -93,6 +99,7 @@ class ChatSocketHandler(tornado.websocket.WebSocketHandler):
 
         ChatSocketHandler.update_cache(chat)
         ChatSocketHandler.send_updates(chat)
+
 
 
 def main():
